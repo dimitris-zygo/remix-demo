@@ -8,8 +8,8 @@ export const loader:LoaderFunction = async ({params}) => {
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
     const title = data?.[0].title;
-    const description = data?.[0].description
-    return [{title:`${title} | Films`, description:description}]
+    const description = data?.[0].description;
+    return [{title:`${title} | Films`, description:description}];
 }
 
 export default function Film(){
