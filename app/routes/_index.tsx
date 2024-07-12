@@ -17,11 +17,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function _index() {
-
         const films = useLoaderData<Film[]>();
         return (
-      <>
-        <h1 className="text-3xl">Welcome to Remix</h1>
         <div className="px-6">
           <Form reloadDocument method='get' className="py-5 space-x-2">
             <label className="font-bold space-x-2">
@@ -34,13 +31,11 @@ export default function _index() {
           </Form>
           <div className="grid grid-cols-4 gap-4">
             {films.map((f) => (
-                <Link title={f.title} key={f.id} to={`film/${f.id}`} prefetch="intent" className="cursor-pointer hover:scale-105 hover:font-bold transform transition-transform duration-300">
+                <Link title={f.title} key={f.id} to={`film/${f.id}`} prefetch="intent" className="cursor-pointer hover:scale-105 flex flex-col justify-center items-center transform transition-transform duration-300">
                   <span>{f.title}</span>
-                  <img src={f.image} alt={f.title}/>
+                  <img src={f.image} alt={f.title} className="h-56"/>
                 </Link>))}
           </div>
         </div>
-      </>
-
   );
 }

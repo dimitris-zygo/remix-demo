@@ -27,8 +27,6 @@ export async function getFilms(title?:string | null) {
 
 export async function getFilmById(filmId:string) {
     const response = await fetch(`https://ghibli.rest/films?id=${filmId}`);
-
     const film: Film = await response.json();
-
     return film;
 }

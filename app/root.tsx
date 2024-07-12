@@ -4,10 +4,13 @@ import {
     Meta,
     Outlet,
     Scripts,
-    ScrollRestoration,
+    ScrollRestoration, useLoaderData,
 } from "@remix-run/react";
+import * as React from "react"
 import "./tailwind.css";
+import styles from "./styles.module.css";
 import {json} from "@remix-run/node";
+import classNames from "classnames";
 
 
 async function fetchGraphQL(query,variables) {
@@ -27,7 +30,6 @@ async function fetchGraphQL(query,variables) {
     const json = await response.json();
     return json.data;
 }
-
 
 export async function loader() {
     const query = `
@@ -66,39 +68,41 @@ function Header() {
     )
 }
 
-function Footer() {
+type BrandsType = {
+    id:string;
+    logos: {
+        dark:string;
+        light:string;
+    };
+    name:string;
+}
+
+function Providers({value}:{value:BrandsType[]}){
     return (
-        <footer className="flex-col items-center justify-center text-center text-white">
-            <main className="bg-[#4073AF]">
-                <div className="grid grid-cols-3 grid-rows-1 gap-x-10 py-6 px-2 sm:px-6">
-                    <div className="space-y-4">
-                        <h2>Placeholder 1</h2>
-                        <div>
-                            <p>Text 1</p>
-                            <p>Text 2</p>
-                        </div>
+        <div className="divide-y divide-color-g -my-2">
+            <div className={classNames("inline-flex", styles.logos)}
+                 style={{
+                     animationDuration: `${value.length * 2}s`,
+                 }}>
+                {[...Array(2).keys()].map((_, index) => (
+                    <div className="inline-flex items-center space-x-4 py-2 text-white" key={index}>
+                        {value.map((b) => (
+                            <div className="w-28" key={b.name}>
+                                {b.name}
+                            </div>
+                        ))}
                     </div>
-                    <div className="space-y-4">
-                        <h2>Placeholder 2</h2>
-                        <div>
-                            <p>Text 1</p>
-                            <p>Text 2</p>
-                        </div>
-                    </div>
-                    <div className="space-y-4">
-                        <h2>Placeholder 3</h2>
-                        <div>
-                            <p>Text 1</p>
-                            <p>Text 2</p>
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <div className="bg-[#004494] flex items-center justify-evenly p-2">
-                <p>About</p>
-                <p>Contact</p>
-                <p>Placeholder</p>
+                ))}
             </div>
+        </div>
+    )
+}
+
+function Footer() {
+    const {data} = useLoaderData<BrandsType[]>();
+    return (
+        <footer className="flex-col items-center justify-center text-center text-white bg-[#4073AF] py-4 max-w-screen overflow-hidden">
+            <Providers value={data.brands}/>
         </footer>
     )
 }
@@ -117,7 +121,9 @@ export default function App() {
         <div className="w-full min-h-screen mb-20">
             <Outlet/>
         </div>
-        <Footer/>
+        <React.Suspense>
+            <Footer/>
+        </React.Suspense>
         <ScrollRestoration/>
         <Scripts/>
         </body>

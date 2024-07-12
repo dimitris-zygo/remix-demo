@@ -1,0 +1,15 @@
+.logos {
+    animation-name: slider_slide__L8L2l;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes slider_slide__L8L2l {
+    0% {
+        transform: translateZ(0);
+    }
+
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
